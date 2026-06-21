@@ -595,7 +595,7 @@
       </div>
 
       <!-- Submit Order Button -->
-      <button id="checkout-btn" onclick="submitOrder()" class="w-full bg-cyan-500 hover:bg-cyan-400 disabled:bg-slate-800 disabled:text-slate-600 disabled:cursor-not-allowed text-slate-950 font-bold py-3.5 rounded-xl transition text-sm flex items-center justify-center space-x-2 shadow-lg shadow-cyan-500/10">
+      <button id="checkout-btn" onclick="submitOrder()" class="w-full bg-cyan-500 hover:bg-cyan-400 disabled:bg-slate-800 disabled:text-slate-650 disabled:cursor-not-allowed text-slate-950 font-bold py-3.5 rounded-xl transition text-sm flex items-center justify-center space-x-2 shadow-lg shadow-cyan-500/10">
         <i class="fa-solid fa-paper-plane"></i>
         <span>注文を確定する (現地支払い)</span>
       </button>
@@ -634,22 +634,15 @@
       onSnapshot 
     } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-    // --- Firebase Initialization Fallbacks & Logic ---
-    const defaultFirebaseConfig = {
-      apiKey: "",
-      authDomain: "reimei-shop-family.firebaseapp.com",
-      projectId: "reimei-shop-family",
-      storageBucket: "reimei-shop-family.appspot.com",
-      messagingSenderId: "1234567890",
-      appId: "1:1234567890:web:abcdef123456"
+    // --- Firebase Config (使い回し用に指定された正しい情報) ---
+    const firebaseConfig = {
+      apiKey: "AIzaSyConva0-yx5nNix7GfwmJBaGm3xKUtSDdk",
+      authDomain: "game-f87b6.firebaseapp.com",
+      projectId: "game-f87b6",
+      storageBucket: "game-f87b6.firebasestorage.app",
+      messagingSenderId: "436007220199",
+      appId: "1:436007220199:web:9c0a35272af2e96d028342"
     };
-
-    let firebaseConfig;
-    if (typeof __firebase_config !== 'undefined') {
-      firebaseConfig = JSON.parse(__firebase_config);
-    } else {
-      firebaseConfig = defaultFirebaseConfig;
-    }
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
@@ -716,6 +709,44 @@
         icon: "fa-mug-hot"
       }
     ];
+
+    // --- DOM Event Bindings & Helpers (関数をグローバルに確実に登録) ---
+    window.switchTab = switchTab;
+    window.switchAdminSubTab = switchAdminSubTab;
+    window.openUserModal = openUserModal;
+    window.closeUserModal = closeUserModal;
+    window.saveUserProfile = saveUserProfile;
+    window.openAdminAuthModal = openAdminAuthModal;
+    window.closeAdminAuthModal = closeAdminAuthModal;
+    window.authAdmin = authAdmin;
+    window.logoutAdmin = logoutAdmin;
+    window.addToCart = addToCart;
+    window.changeCartQty = changeCartQty;
+    window.toggleCart = toggleCart;
+    window.applyPromoCode = applyPromoCode;
+    window.submitOrder = submitOrder;
+    window.openProductModal = openProductModal;
+    window.closeProductModal = closeProductModal;
+    window.saveProduct = saveProduct;
+    window.updateDirectStock = updateDirectStock;
+    window.deleteProduct = deleteProduct;
+    window.confirmDeleteProduct = confirmDeleteProduct;
+    window.clearAllOrders = clearAllOrders;
+    window.confirmClearAllOrders = confirmClearAllOrders;
+    window.deleteSingleOrder = deleteSingleOrder;
+    window.saveAdminCodeSetting = saveAdminCodeSetting;
+    window.savePromoCodeSetting = savePromoCodeSetting;
+    window.resetFirestoreData = resetFirestoreData;
+    window.selectPresetIcon = selectPresetIcon;
+    window.openProductDetailsModal = openProductDetailsModal;
+    window.closeProductDetailsModal = closeProductDetailsModal;
+    window.setReviewRating = setReviewRating;
+    window.submitReview = submitReview;
+    window.openDMDrawer = openDMDrawer;
+    window.toggleDMDrawer = toggleDMDrawer;
+    window.sendUserDM = sendUserDM;
+    window.selectAdminChatThread = selectAdminChatThread;
+    window.sendAdminDM = sendAdminDM;
 
     // --- Auth Init ---
     const initAuth = async () => {
@@ -860,44 +891,6 @@
       }
     }
 
-    // --- DOM Event Bindings & Helpers ---
-    window.switchTab = switchTab;
-    window.switchAdminSubTab = switchAdminSubTab;
-    window.openUserModal = openUserModal;
-    window.closeUserModal = closeUserModal;
-    window.saveUserProfile = saveUserProfile;
-    window.openAdminAuthModal = openAdminAuthModal;
-    window.closeAdminAuthModal = closeAdminAuthModal;
-    window.authAdmin = authAdmin;
-    window.logoutAdmin = logoutAdmin;
-    window.addToCart = addToCart;
-    window.changeCartQty = changeCartQty;
-    window.toggleCart = toggleCart;
-    window.applyPromoCode = applyPromoCode;
-    window.submitOrder = submitOrder;
-    window.openProductModal = openProductModal;
-    window.closeProductModal = closeProductModal;
-    window.saveProduct = saveProduct;
-    window.updateDirectStock = updateDirectStock;
-    window.deleteProduct = deleteProduct;
-    window.confirmDeleteProduct = confirmDeleteProduct;
-    window.clearAllOrders = clearAllOrders;
-    window.confirmClearAllOrders = confirmClearAllOrders;
-    window.deleteSingleOrder = deleteSingleOrder;
-    window.saveAdminCodeSetting = saveAdminCodeSetting;
-    window.savePromoCodeSetting = savePromoCodeSetting;
-    window.resetFirestoreData = resetFirestoreData;
-    window.selectPresetIcon = selectPresetIcon;
-    window.openProductDetailsModal = openProductDetailsModal;
-    window.closeProductDetailsModal = closeProductDetailsModal;
-    window.setReviewRating = setReviewRating;
-    window.submitReview = submitReview;
-    window.openDMDrawer = openDMDrawer;
-    window.toggleDMDrawer = toggleDMDrawer;
-    window.sendUserDM = sendUserDM;
-    window.selectAdminChatThread = selectAdminChatThread;
-    window.sendAdminDM = sendAdminDM;
-
     // --- Tabs & Navigation Routing ---
     function switchTab(tabName) {
       currentTab = tabName;
@@ -948,34 +941,6 @@
       } else {
         document.getElementById('admin-btn-text').innerText = "管理室";
       }
-    }
-
-    // --- Toast System ---
-    function showToast(message, type = 'info') {
-      const toast = document.getElementById('toast');
-      const toastText = document.getElementById('toast-text');
-      const toastIcon = document.getElementById('toast-icon');
-
-      toastText.innerText = message;
-      
-      if (type === 'success') {
-        toastIcon.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i>`;
-        toastIcon.className = "w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center";
-      } else if (type === 'error') {
-        toastIcon.innerHTML = `<i class="fa-solid fa-circle-exclamation text-rose-400"></i>`;
-        toastIcon.className = "w-8 h-8 rounded-lg bg-rose-500/10 flex items-center justify-center";
-      } else {
-        toastIcon.innerHTML = `<i class="fa-solid fa-circle-info text-cyan-400"></i>`;
-        toastIcon.className = "w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center";
-      }
-
-      toast.classList.remove('translate-y-20', 'opacity-0');
-      toast.classList.add('translate-y-0', 'opacity-100');
-
-      setTimeout(() => {
-        toast.classList.add('translate-y-20', 'opacity-0');
-        toast.classList.remove('translate-y-0', 'opacity-100');
-      }, 3000);
     }
 
     // --- Product Grid System ---
